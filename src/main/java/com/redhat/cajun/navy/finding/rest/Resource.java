@@ -24,4 +24,12 @@ public class Resource {
         return findService.getVictimByName(victimName);
     }
 
+    @GET
+    @Path("/shelter/{incidentId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getShelter(@PathParam("incidentId") String incidentId) {
+
+        return findService.getVictimShelter(incidentId);
+    }
+
 }

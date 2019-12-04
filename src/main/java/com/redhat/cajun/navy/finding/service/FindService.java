@@ -32,6 +32,8 @@ public class FindService {
 
     public Response getVictimByName(String name) {
 
+        logger.info("***Requesting Victim Details for victim name - "+name+"***");
+
         List<Victim> victimList = null;
         try {
             logger.info("Request sent to Incident service for name - " + name);
@@ -51,6 +53,8 @@ public class FindService {
     }
 
     public Response getVictimShelter(String incidentId) {
+
+        logger.info("***Requesting Shelter Details for Incident - "+incidentId+"***");
 
         boolean isMissionCreated = false;
         String missionId = null;
@@ -78,7 +82,7 @@ public class FindService {
 
             logger.info("Request sent for getting mission details of missionId - " + missionId);
             String missionDetails = missionRestClient.getMissionByIncidentId(missionId);
-            logger.info("Mission details for mission Id - " + missionId);
+            logger.info("Received Mission details for mission Id - " + missionId);
 
             JSONObject jsonResponse = new JSONObject(missionDetails);
             String shelterLat = jsonResponse.getString("destinationLat");

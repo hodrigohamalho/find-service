@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - image: quay.io/meghanaskanagal/find-service:latest
+          imagePullPolicy: Always
+          name: api
+          ports:
+            - containerPort: 9000
+              protocol: TCP

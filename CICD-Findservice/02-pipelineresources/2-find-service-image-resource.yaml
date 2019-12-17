@@ -1,9 +1,0 @@
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: find-service-image
-spec:
-  type: image
-  params:
-  - name: url
-    value: quay.io/meghanaskanagal/find-service:latest

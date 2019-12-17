@@ -1,9 +1,0 @@
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: find-ui-image
-spec:
-  type: image
-  params:
-  - name: url
-    value: https://quay.io/meghanaskanagal/findmyrelative-frontend #alter this image name while running

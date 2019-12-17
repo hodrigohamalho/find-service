@@ -1,25 +1,25 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  name: create-ui-repo-webhook-run
+  name: create-findmyrelative-backend-repo-webhook-run
 spec:
   taskRef:
     name: create-webhook
   inputs:
     params:
     - name: GitHubOrg
-      value: "meghanaskangal"
+      value: "<your user name or or org name>"
     - name: GitHubUser
-      value: "meghanaskanagal"
+      value: "<your user name>"
     - name: GitHubRepo
-      value: "findmyrelative-frontend"
+      value: "find-service"
     - name: GitHubSecretName
-      value: webhook-secret
+      value: findmyrelative-backend-webhook-secret
     - name: GitHubAccessTokenKey
       value: token
     - name: GitHubSecretStringKey
       value: secret
     - name: ExternalDomain
-      value: #value that we get after creating a event listener
+      value: <event-listener route url>
   timeout: 1000s
   serviceAccount: serviceaccount

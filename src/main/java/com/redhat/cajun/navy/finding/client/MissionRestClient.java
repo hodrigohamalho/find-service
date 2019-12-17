@@ -13,9 +13,9 @@ import java.util.List;
 public interface MissionRestClient {
 
     @GET
-    @Path("/{incidentId}")
+    @Path("/{missionId}")
     @Produces("application/json")
-    String getMissionByIncidentId(@PathParam String incidentId);
+    String getMissionById(@PathParam String missionId);
 
     @GET
     @Path("/keys")

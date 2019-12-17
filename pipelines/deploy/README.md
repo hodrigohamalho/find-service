@@ -1,1 +1,0 @@
-Pipeline to build and deploy the application using deployment

@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: findservice-cicd-triggertemplate
+  name: findmyrelative-backend-cicd-triggertemplate
 spec:
   params:
   - name: gitrevision
@@ -17,7 +17,7 @@ spec:
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineResource
     metadata:
-      name: source-repo-$(params.gitrepositoryname)-$(uid)
+      name: findmyrelative-backend-git-repo-$(uid)
       namespace: $(params.namespace)
     spec:
       type: git
@@ -29,30 +29,28 @@ spec:
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineResource
     metadata:
-      name: image-source-$(params.gitrepositoryname)-$(uid)
+      name: findmyrealtive-backend-image-$(uid)
       namespace: $(params.namespace)
     spec:
       type: image
       params:
       - name: url
-        value: quay.io/meghanaskanagal/$(params.gitrepositoryname):latest
+        value: image-registry.openshift-image-registry.svc:5000/find-my-relative/backend:latest
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineRun
     metadata:
-      name: findservice-cicd-$(params.gitrepositoryname)-$(uid)
+      name: findmyrelative-backend-pipelinerun-$(uid)
       namespace: $(params.namespace)
     spec:
       pipelineRef:
-        name: build-and-deploy
+        name: findmyrelative-backend-pipeline
       serviceAccount: 'pipeline'
       resources:
-      - name: source-repo
+      - name: source-git-repo
         resourceRef:
-          name: source-repo-$(params.gitrepositoryname)-$(uid)
-      - name: image-resource
+          name: findmyrelative-backend-git-repo-$(uid)
+      - name: image-resource-name
         resourceRef:
-          name: image-source-$(params.gitrepositoryname)-$(uid)
-      params:
-      - name: deployment-name
-        value: $(params.gitrepositoryname)
+          name: findmyrealtive-backend-image-$(uid)
+     
 

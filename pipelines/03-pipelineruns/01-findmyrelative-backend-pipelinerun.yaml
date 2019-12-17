@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: findmyrelative-backend-pipelinerun
+spec:
+  pipelineRef:
+    name: findmyrelative-backend-pipeline
+  resources:
+  - name: source-git-repo
+    resourceRef:
+      name: findmyrelative-backend-git-repo
+  - name: image-resource-name
+    resourceRef:
+      name: findmyrelative-backend-image
+  

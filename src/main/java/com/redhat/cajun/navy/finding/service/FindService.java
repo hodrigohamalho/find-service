@@ -64,6 +64,7 @@ public class FindService {
             List<String> missionList = missionRestClient.getMissions();
             logger.info("Received Mission List");
 
+            //Mission Id = Incident Id + Responder Id
             for (String mission : missionList) {
                 isMissionCreated = mission.contains(incidentId);
                 if (isMissionCreated) {
@@ -81,7 +82,7 @@ public class FindService {
             }
 
             logger.info("Request sent for getting mission details of missionId - " + missionId);
-            String missionDetails = missionRestClient.getMissionByIncidentId(missionId);
+            String missionDetails = missionRestClient.getMissionById(missionId);
             logger.info("Received Mission details for mission Id - " + missionId);
 
             JSONObject jsonResponse = new JSONObject(missionDetails);

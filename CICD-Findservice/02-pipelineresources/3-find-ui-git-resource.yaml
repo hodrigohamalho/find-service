@@ -1,0 +1,9 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: find-ui-git-repo
+spec:
+  type: git
+  params:
+  - name: url
+    value: https://github.com/Meghanaskanagal/findmyrelative-frontend

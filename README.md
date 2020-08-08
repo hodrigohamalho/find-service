@@ -18,12 +18,16 @@ Frontend Service can be found [here](https://github.com/Emergency-Response-Demo/
    
     ```
     mvn clean package -DskipTests
-    buildah bud -f src/main/docker/Dockerfile.jvm -t quay.io/emergencyresponsedemo/find-service:0.0.3 .
+    buildah bud -f src/main/docker/Dockerfile.jvm -t quay.io/emergencyresponsedemo/find-service:0.0.4 .
+    buildah bud -f src/main/docker/Dockerfile.jvm -t $INTERNAL_OCP_REGISTRY_HOST/user1-er-demo/user1-find-service:0.0.4 .
     ```
 
-2. Push to quay
+2. Push to registries
    ```
-   podman push quay.io/emergencyresponsedemo/find-service:0.0.3 .
+   oc create is user1-find-service -n user1-er-demo && \
+       podman push $HOST/user1-er-demo/user1-find-service:0.0.4 --tls-verify=false          : push to internal OCP registry 
+
+   podman push quay.io/emergencyresponsedemo/find-service:0.0.4 .                           # push to quay
    ```
 
 ## Test

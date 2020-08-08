@@ -36,14 +36,12 @@ public class FindService {
 
         List<Victim> victimList = null;
         try {
-            logger.info("Request sent to Incident service for name - " + name);
             victimList = incidentRestClient.getByName(name);
-            logger.info("Response received for name - " + name + " - " + victimList);
             JsonArray victimsArray = new JsonArray(victimList.stream().map(this::toJsonObject).collect(Collectors.toList()));
             JsonObject jsonObject = new JsonObject().put("victims", victimsArray);
             return Response.ok(jsonObject).build();
         } catch (Exception ex) {
-            logger.info("Unable to connect to Incident Service. ", ex);
+            logger.error("Unable to connect to Incident Service. ", ex);
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -60,16 +58,13 @@ public class FindService {
         String missionId = null;
 
         try {
-            logger.info("Request sent to get Mission List");
             List<String> missionList = missionRestClient.getMissions();
-            logger.info("Received Mission List");
 
             //Mission Id = Incident Id + Responder Id
             for (String mission : missionList) {
                 isMissionCreated = mission.contains(incidentId);
                 if (isMissionCreated) {
                     missionId = mission;
-                    logger.info("Found mission Id - " + mission + " for Incident Id - " + incidentId);
                     break;
                 }
             }
@@ -81,23 +76,20 @@ public class FindService {
                 return Response.ok(jsonObject).build();
             }
 
-            logger.info("Request sent for getting mission details of missionId - " + missionId);
             String missionDetails = missionRestClient.getMissionById(missionId);
-            logger.info("Received Mission details for mission Id - " + missionId);
-
             JSONObject jsonResponse = new JSONObject(missionDetails);
             String shelterLat = jsonResponse.getString("destinationLat");
             String shelterLong = jsonResponse.getString("destinationLong");
 
             Shelter shelter = getShelterName(shelterLat, shelterLong);
-            logger.info("Shelter Details for Mission Id - " + missionId + " name - " + shelter.getName() + " lat - " + shelter.getLat() + " Long - " + shelter.getLon());
+            logger.debug("Shelter Details for Mission Id - " + missionId + " name - " + shelter.getName() + " lat - " + shelter.getLat() + " Long - " + shelter.getLon());
 
             JsonObject jsonObject = new JsonObject().put("status", true);
             jsonObject.put("shelter", toShelterJsonObject(shelter));
             return Response.ok(jsonObject).build();
 
         } catch (Exception ex) {
-            logger.info("Unable to connect to Mission Service. ", ex);
+            logger.error("Unable to connect to Mission Service. ", ex);
             return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
         }
     }

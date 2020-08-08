@@ -17,7 +17,8 @@ public class ResourceTest {
                 .when().get("/find/victim/byName/{name}")
                 .then()
                 .statusCode(200)
-                .body(is("{\"empty\":false,\"map\":{\"victims\":{\"empty\":false,\"list\":[{\"empty\":false,\"map\":{\"id\":\"test-incident-id\",\"lat\":\"00.00\",\"lon\":\"00.00\",\"medicalNeeded\":true,\"numberOfPeople\":123,\"victimName\":\"test-victim-1\",\"status\":\"REPORTED\"}}]}}}"));
+                .body(is("{\"victims\":[{\"id\":\"test-incident-id\",\"lat\":\"00.00\",\"lon\":\"00.00\",\"medicalNeeded\":true,\"numberOfPeople\":123,\"victimName\":\"test-victim-1\",\"victimPhoneNumber\":null,\"timeStamp\":null,\"status\":\"REPORTED\"}]}"));
+
     }
 
     //Victim's details are not available
@@ -28,7 +29,7 @@ public class ResourceTest {
                 .when().get("/find/victim/byName/{name}")
                 .then()
                 .statusCode(200)
-                .body(is("{\"empty\":false,\"map\":{\"victims\":{\"empty\":true,\"list\":[]}}}"));
+                .body(is("{\"victims\":[]}"));
     }
 
     //Mission is created and shelter name is available
@@ -39,7 +40,7 @@ public class ResourceTest {
                 .when().get("/find/shelter/{incidentId}")
                 .then()
                 .statusCode(200)
-                .body(is("{\"empty\":false,\"map\":{\"status\":true,\"shelter\":{\"empty\":false,\"map\":{\"name\":\"Wilmington Marine Center\",\"lat\":\"34.1706\",\"lon\":\"-77.949\"}}}}"));
+                .body(is("{\"status\":true,\"shelter\":{\"name\":\"Wilmington Marine Center\",\"lat\":\"34.1706\",\"lon\":\"-77.949\"}}"));
     }
 
     //Mission is created but Shelter name not available
@@ -50,7 +51,7 @@ public class ResourceTest {
                 .when().get("/find/shelter/{incidentId}")
                 .then()
                 .statusCode(200)
-                .body(is("{\"empty\":false,\"map\":{\"status\":true,\"shelter\":{\"empty\":false,\"map\":{\"name\":\"Shelter Name not available\",\"lat\":\"00\",\"lon\":\"00\"}}}}"));
+                .body(is("{\"status\":true,\"shelter\":{\"name\":\"Shelter Name not available\",\"lat\":\"00\",\"lon\":\"00\"}}"));
     }
 
     //Mission is not created
@@ -61,7 +62,7 @@ public class ResourceTest {
                 .when().get("/find/shelter/{incidentId}")
                 .then()
                 .statusCode(200)
-                .body(is("{\"empty\":false,\"map\":{\"status\":false,\"Desc\":\"Mission not found\"}}"));
+                .body(is("{\"status\":false,\"Desc\":\"Mission not found\"}"));
     }
 
 }

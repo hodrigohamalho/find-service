@@ -6,11 +6,14 @@ import com.redhat.cajun.navy.finding.model.Shelter;
 import com.redhat.cajun.navy.finding.model.Victim;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -29,6 +32,19 @@ public class FindService {
     @Inject
     @RestClient
     MissionRestClient missionRestClient;
+
+    @ConfigProperty(name="com.redhat.cajun.navy.finding.client.MissionRestClient/mp-rest/url")
+    String missionServiceURL;
+
+    
+    @ConfigProperty(name="com.redhat.cajun.navy.finding.client.IncidentRestClient/mp-rest/url")
+    String incidentServiceURL;
+
+
+    @PostConstruct
+    public void start() {
+        logger.info("start() \n\t missionServiceURL = "+missionServiceURL+"\n\t incidentServiceUrl = "+incidentServiceURL);
+    }
 
     public Response getVictimByName(String name) {
 

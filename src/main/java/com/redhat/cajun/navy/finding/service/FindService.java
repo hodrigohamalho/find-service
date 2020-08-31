@@ -13,12 +13,17 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
+import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.enterprise.event.Observes;
+
+import io.quarkus.runtime.ShutdownEvent;
+import io.quarkus.runtime.StartupEvent;
+
 
 @ApplicationScoped
 public class FindService {
@@ -41,8 +46,7 @@ public class FindService {
     String incidentServiceURL;
 
 
-    @PostConstruct
-    public void start() {
+    void onStart(@Observes @Priority(value = 1) StartupEvent ev) {
         logger.info("start() \n\t missionServiceURL = "+missionServiceURL+"\n\t incidentServiceUrl = "+incidentServiceURL);
     }
 
@@ -122,6 +126,10 @@ public class FindService {
 
     private JsonObject toShelterJsonObject(Shelter shelter) {
         return JsonCodec.toShelterJsonObject(shelter);
+    }
+
+    void onStop(@Observes ShutdownEvent ev) {
+        logger.info("onStop() stopping...");
     }
 
 }

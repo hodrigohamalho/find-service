@@ -1,10 +1,66 @@
-# find-service
+# Evacuee find-service
 
-Quarkus based backend service for the Find My Relative demo application.
+Quarkus based backend service for the [Find My Relative demo application](https://github.com/Emergency-Response-Demo/findmyrelative-frontend).
 
-Frontend Service can be found [here](https://github.com/Emergency-Response-Demo/findmyrelative-frontend). 
 
-## Running
+
+## Running and Test
+
+The *find-service* is installed by default as a KNative Serving service in an ER-Demo installation .
+
+You can invoke the *find-service* of the ER-Demo by executing the following:
+
+1. Use the simulators of ER-Demo to create 1 or more *incidents*.
+2. Use an http client to invoke the _find-service_.  Sample queries using the _curl_ utility are as follows:
+
+
+   1. If you haven't done so already, set the value of the *OCP_USERNAME* environment variable in your shell:
+     ```
+     export OCP_USERNAME=user1
+     ```
+
+   2. Given a evacuee's name, identify the details and status of the corresponding *incident*:
+     ```
+     $ export victimName='Eli%20Hill'    # changeme using URL encoded space
+
+     $ curl $(echo -en "\n$(oc get kservice $OCP_USERNAME-find-service -n $OCP_USERNAME-er-demo --template='{{ .status.url }}')/find/victim/byName/$victimName\n\n") | jq .
+
+
+     {
+       "victims": [
+        {
+          "id": "921d8087-9d0c-4193-888b-2f36f713f544",
+          "lat": "34.236220397748056",
+          "lon": "-77.85671833586497",
+          "medicalNeeded": true,
+          "numberOfPeople": 3,
+          "victimName": "Eli Hill",
+          "victimPhoneNumber": "(828) 555-3028",
+          "timeStamp": 1598920936720,
+          "status": "PICKEDUP"
+        }
+        ]
+      }
+
+     ```
+   3. List the shelter details where evacuees associated with an incidentId were dropped off:
+     ```
+     $ incidentId=changeme
+
+     $ curl $(echo -en "\n$(oc get kservice $OCP_USERNAME-find-service -n $OCP_USERNAME-er-demo --template='{{ .status.url }}')/find/shelter/$incidentId\n\n") | jq .
+
+
+      {
+       "status": true,
+       "shelter": {
+        "name": "Port City Marina",
+        "lat": "34.2461",
+        "lon": "-77.9519"
+       }
+      }
+    ```
+   
+## Old Docs
 
 - Locally
 
@@ -30,7 +86,6 @@ Frontend Service can be found [here](https://github.com/Emergency-Response-Demo/
    podman push quay.io/emergencyresponsedemo/find-service:0.0.4 .                           # push to quay
    ```
 
-## Test
 
   ```
   curl user1-find-service:8080/find/shelter/23

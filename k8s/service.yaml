@@ -7,8 +7,15 @@ spec:
     spec:
       containers:
         - image: image-registry.openshift-image-registry.svc:5000/user1-er-demo/user1-find-service:latest
-          env:
-            - name: quarkus.kubernetes-config.config-maps
-              value: find-service
-            - name: quarkus.kubernetes-config.enabled
-              value: 'true'
+          volumeMounts:
+          - mountPath: /deployments/config
+            name: config
+      volumes:
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: application.properties
+            path: application.properties
+          name: find-service
+        name: config
+       

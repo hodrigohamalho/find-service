@@ -14,7 +14,7 @@ import java.util.List;
 public interface IncidentRestClient {
 
     @GET
-    @Path("/victim/byname/{name}")
+    @Path("/byname/{name}")
     @Produces("application/json")
     List<Victim> getByName(@PathParam String name);
 
